@@ -1,14 +1,10 @@
 // import logo from './logo.svg';
 import './App.css';
-import {Container} from 'react-bootstrap';
-import Product from './components/Product/Product';
-
+import Home from './components/Home/HomeComponent';
 
 function App() {
   return (
-    <Container className="mt-5">
-      <Product />
-    </Container>
+    <Home />
     // <div className="App">
     //   <header className="App-header">
     //     <img src={logo} className="App-logo" alt="logo" />
