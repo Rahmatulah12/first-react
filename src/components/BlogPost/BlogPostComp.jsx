@@ -1,69 +1,45 @@
 import React, { Component } from 'react';
+import {Card, Col, Image} from 'react-bootstrap';
 
 class BlogPostComp extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            posts: [],
+            isHover : false,
         }
+
+        this.handleHover = this.handleHover.bind(this);
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            this.get('https://jsonplaceholder.typicode.com/posts')
-            .then((response) => {
-                console.log(response);
-            }).catch(error => {
-                console.log(error);
-            })
-        }, 2000);
-    }
-
-    post = async (url = '', data = {}) => {
-        try{
-            const response = await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-            'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify(data) // body data type must match "Content-Type" header
-        });
-        return response.json(); // parses JSON response into native JavaScript objects
-        }catch(e){
-            return e;
-        }
-    }
-
-    get = async (url = '') => {
-        try{
-            const response = await fetch(url, {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-            'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        });
-        return response.json(); // parses JSON response into native JavaScript objects
-        }catch(e){
-            return e;
-        }
+    handleHover() {
+        this.setState(prevState => ({
+            isHover : !prevState.isHover,
+        }));
     }
 
     render() {
+        const shadowCard = this.state.isHover ? "shadow" : '';
         return(
-            <h1>OK</h1>
+            <Col xs={12} sm={12}>
+                <Card className={shadowCard}
+                    onMouseEnter={this.handleHover} onMouseLeave={this.handleHover}
+                    style={{ marginBottom: '25px' }}
+                >
+                    <Card.Body>
+                        <Image 
+                            src="https://media.suara.com/pictures/970x544/2020/06/24/16690-blog.jpg" 
+                            alt={this.props.alt} width="450" height="450"fluid rounded
+                            className="shadow float-start me-3"
+                        />
+                        <Card.Title className="text-start">{this.props.title}</Card.Title>
+                        <Card.Text className="text-start">
+                            {this.props.body}
+                        </Card.Text>
+                        <Card.Link  href="#" className="text-end">Read more</Card.Link>
+                    </Card.Body>
+                </Card>
+            </Col>
         );
     }
 
