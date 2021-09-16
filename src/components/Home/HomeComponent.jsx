@@ -12,16 +12,20 @@ class HomeComponent extends Component {
         this.state = {
             posts: [],
             showModal: false,
+            dataEdit: null,
+            judul: '',
+            status: '',
         }
         this.handleRemove = this.handleRemove.bind(this);
     }
 
     handleShowModal = () => {
-        this.setState({ showModal: true });
+        this.setState({ showModal: true, judul: 'New Post', status:'add', dataEdit: null,});
     }
 
     handleHideModal = () => {
-        this.setState({ showModal: false });
+        this.setState({ showModal: false, judul: 'Edit Post', status:'add', });
+        this.fetchData();
     }
 
     handleRemove = (id) => {
@@ -56,8 +60,12 @@ class HomeComponent extends Component {
         });
     }
 
+    handleUpdate = (data) => {
+        this.setState({ showModal: true, dataEdit: data, status:'edit',});
+    }
+
     fetchData = () => {
-        get('http://localhost:9090/posts?_page=1&_limit=10')
+        get('http://localhost:9090/posts?_sort=id&_order=desc')
         .then(response => {
             if(response.length > 0){
                 this.setState({
@@ -79,9 +87,12 @@ class HomeComponent extends Component {
             <Container className="mt-5">
                 <Button variant="outline-primary"
                     className="my3"
-                    onClick={this.handleShowModal}
+                    onClick={() => this.handleShowModal()}
                 >Add New</Button>
-                <FormBlogModal show={this.state.showModal} onClose={this.handleHideModal} />
+                <FormBlogModal judul={this.state.judul} show={this.state.showModal} 
+                    onClose={this.handleHideModal} status={this.state.status}
+                    data={this.state.dataEdit}
+                />
             {/* <Product /> */}
                 <Row className="mt-5">
 
@@ -89,6 +100,7 @@ class HomeComponent extends Component {
                         this.state.posts.map(post => {
                             return <BlogPost key={post.id} data={post}
                                     remove={this.handleRemove}
+                                    update={this.handleUpdate}
                             />
                         })
                     }

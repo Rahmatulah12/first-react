@@ -42,9 +42,13 @@ class BlogPostComp extends Component {
                     </Card.Body>
                     <Card.Footer>
                         <Button variant="outline-danger"
-                            className="float-end my3"
+                            className="float-end my-1"
                             onClick={() => this.props.remove(this.props.data.id)}
                         >Delete</Button>
+                        <Button variant="outline-success"
+                            className="float-end my-1 mx-2"
+                            onClick={() => this.props.update(this.props.data)}
+                        >Update</Button>
                     </Card.Footer>
                 </Card>
             </Col>
